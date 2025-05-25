@@ -29,7 +29,9 @@ export class TokenManagementComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-
+    if (!this.credentialsService.isAuthenticated) {
+      this.router.navigate(['/auth-error']);
+    }
   }
 
   onGenerate(): void {
@@ -39,7 +41,7 @@ export class TokenManagementComponent implements OnInit, OnDestroy {
   redirectToLogin(): void {
     const keycloakAuthUrl = 'http://localhost:8181/realms/myrealm/protocol/openid-connect/auth';
     const clientId = 'myclient';
-    const redirectUri = encodeURIComponent('http://localhost:8000/auth-callback');
+    const redirectUri = encodeURIComponent('http://localhost:4200/auth-callback');
     const responseType = 'token';
     const scope = 'openid';
 

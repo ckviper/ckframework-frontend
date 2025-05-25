@@ -17,16 +17,17 @@ export class AuthCallbackComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
-      const accessToken = params.get('access_token');
+    this.authCallbackStore.tokenSaved$.subscribe(() => {
+      this.router.navigate(['/token-management']);
+    });
+    const fragment = this.route.snapshot.fragment;
+    if (fragment) {
+      const accessToken = new URLSearchParams(fragment).get('access_token');
       if (accessToken) {
         this.authCallbackStore.saveAccessToken(accessToken);
-        this.authCallbackStore.tokenSaved$.subscribe(() => {
-          this.router.navigate(['/token-management']);
-        });
       } else {
         this.router.navigate(['/auth-error']);
       }
-    });
+    }
   }
 }
